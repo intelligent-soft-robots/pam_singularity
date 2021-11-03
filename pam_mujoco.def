@@ -1,0 +1,24 @@
+Bootstrap: localimage
+From: pam_base.sif
+
+%files
+    build/pam_mujoco_ws/workspace /tmp_ws
+
+%post
+    cd /tmp_ws
+    colcon build --install-base /opt/pam --cmake-args ' -DCMAKE_BUILD_TYPE=Release '
+
+    # create /setup.bash for easily activating the workspace
+    echo "source /opt/pam/setup.bash" > /setup.bash
+
+    # cleanup
+    cd -
+    rm -rf /tmp_ws
+
+
+%runscript -c /bin/bash
+    set -e
+
+    # setup environment
+    source /setup.bash
+    exec "$@"
