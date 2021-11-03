@@ -1,0 +1,11 @@
+Bootstrap: localimage
+From: pam_mujoco.sif
+
+%post
+    git clone https://github.com/intelligent-soft-robots/learning_table_tennis_from_scratch.git
+    cd learning_table_tennis_from_scratch
+    pip3 install .
+
+    # cleanup
+    cd ..
+    rm -rf learning_table_tennis_from_scratch

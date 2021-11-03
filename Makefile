@@ -1,4 +1,4 @@
-sifs = pam_base.sif pam_mujoco.sif
+sifs = pam_base.sif pam_mujoco.sif learning_table_tennis_from_scratch.sif
 
 .PHONY: all
 all: $(sifs)
@@ -22,6 +22,7 @@ build/pam_mujoco_ws:
 
 pam_mujoco.def: pam_base.sif build/pam_mujoco_ws
 
+learning_table_tennis_from_scratch.def: pam_mujoco.sif
 
 # build arbitrary def file
 %.sif: %.def
