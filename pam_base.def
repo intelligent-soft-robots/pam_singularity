@@ -7,7 +7,7 @@ From: ubuntu:18.04
     export DEBIAN_FRONTEND=noninteractive
 
     apt-get update
-    apt-get install -y wget unzip
+    apt-get install -y wget unzip software-properties-common
 
     # get free mujoco key and store it in the image
     mkdir /opt/mujoco
@@ -30,6 +30,12 @@ From: ubuntu:18.04
     bash -e ./install_mujoco
     bash -e ./pip3-dependencies
 
+    # some packages need gcc 9
+    add-apt-repository ppa:ubuntu-toolchain-r/test
+    apt install -y gcc-9 g++-9
+    # make sure gcc/g++ 9 is used by default
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+
     pip3 install --upgrade pip
 
     # additional dependencies that are needed but not installed by the scripts
@@ -39,6 +45,7 @@ From: ubuntu:18.04
     apt-get install -y clang-format
     apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev
     apt-get install -y xterm
+    apt-get install -y libzmqpp-dev
 
     pip3 install pytransform3d zmq
 
