@@ -106,6 +106,10 @@ From: ubuntu:18.04
     # dependency issue
     pip3 install -U colcon-common-extensions
 
+    # Change standard "python" to use python3 (otherwise Python bindings for
+    # some packages will end up being build for Python 2).
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 300
+
 
 %environment
     export MUJOCO_PY_MJKEY_PATH=/opt/mujoco/mjkey.txt
