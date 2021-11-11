@@ -15,10 +15,15 @@ From: pam_base.sif
     cd -
     rm -rf /tmp_ws
 
+    # create a runscript that uses bash
+    cat > /runscript.bash << \EOM
+#!/bin/bash
+set -e
 
-%runscript -c /bin/bash
-    set -e
+# setup environment
+source /setup.bash
+exec "$@"
+EOM
 
-    # setup environment
-    source /setup.bash
-    exec "$@"
+%runscript
+    exec bash /runscript.bash "$@"
