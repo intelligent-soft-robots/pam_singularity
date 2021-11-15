@@ -4,7 +4,11 @@ From: pam_mujoco.sif
 %post
     git clone https://github.com/intelligent-soft-robots/learning_table_tennis_from_scratch.git
     cd learning_table_tennis_from_scratch
-    pip3 install .
+    pip3 install --no-cache-dir .
+
+    # also install cluster_utils for hyperparameter optimisation
+    # pip3 install --no-cache-dir -U git+https://gitlab.tuebingen.mpg.de/mrolinek/cluster_utils.git
+    pip3 install --no-cache-dir -U git+https://gitlab.tuebingen.mpg.de/felixwidmaier/cluster_utils.git@fwidmaier/displot
 
     # cleanup
     cd ..
