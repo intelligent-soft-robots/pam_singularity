@@ -1,6 +1,9 @@
 Bootstrap: localimage
 From: pam_mujoco.sif
 
+%files
+    build/cluster_utils /cluster_utils
+
 %post
     git clone https://github.com/intelligent-soft-robots/learning_table_tennis_from_scratch.git
     cd learning_table_tennis_from_scratch
@@ -9,10 +12,7 @@ From: pam_mujoco.sif
     rm -rf learning_table_tennis_from_scratch
 
     # also install cluster_utils for hyperparameter optimisation
-    # pip3 install --no-cache-dir -U git+https://gitlab.tuebingen.mpg.de/mrolinek/cluster_utils.git
-    # pip3 install --no-cache-dir -U git+https://gitlab.tuebingen.mpg.de/felixwidmaier/cluster_utils.git@fwidmaier/displot
-    git clone https://gitlab.tuebingen.mpg.de/felixwidmaier/cluster_utils.git -b fwidmaier/displot
-    cd cluster_utils
+    cd /cluster_utils
     pip3 install --no-cache-dir .
-    cd ..
-    rm -rf cluster_utils
+    cd -
+    rm -rf /cluster_utils

@@ -14,6 +14,11 @@ build/pam_mujoco_ws:
 		git clone https://github.com/intelligent-soft-robots/treep_isr.git; \
 		treep --clone PAM_MUJOCO;
 
+build/cluster_utils:
+	mkdir -p build
+	cd build; \
+		git clone git@gitlab.tuebingen.mpg.de:felixwidmaier/cluster_utils.git -b fwidmaier/displot
+
 
 # Regarding the structure of this Makefile:
 # There is a generic "make *.sif" target which simply builds the *.def file of
@@ -22,7 +27,7 @@ build/pam_mujoco_ws:
 
 pam_mujoco.def: pam_base.sif build/pam_mujoco_ws
 
-learning_table_tennis_from_scratch.def: pam_mujoco.sif
+learning_table_tennis_from_scratch.def: pam_mujoco.sif build/cluster_utils
 
 # build arbitrary def file
 %.sif: %.def
