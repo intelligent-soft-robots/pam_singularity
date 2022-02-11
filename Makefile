@@ -16,8 +16,7 @@ build/pam_mujoco_ws:
 
 build/cluster_utils:
 	mkdir -p build
-	cd build; \
-		git clone git@gitlab.tuebingen.mpg.de:felixwidmaier/cluster_utils.git -b fwidmaier/displot
+	cd build; git clone git@gitlab.tuebingen.mpg.de:mrolinek/cluster_utils.git
 
 
 # Regarding the structure of this Makefile:
