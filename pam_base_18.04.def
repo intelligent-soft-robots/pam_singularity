@@ -1,0 +1,118 @@
+Bootstrap: docker
+From: ubuntu:18.04
+
+%post -c /bin/bash
+    set -e
+
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt-get update
+    apt-get install -y wget unzip software-properties-common
+
+    # get free mujoco key and store it in the image
+    mkdir /opt/mujoco
+    export MUJOCO_PY_MJKEY_PATH=/opt/mujoco/mjkey.txt
+    wget https://roboti.us/file/mjkey.txt -O "${MUJOCO_PY_MJKEY_PATH}"
+
+    mkdir /tmp/pam && cd /tmp/pam
+    wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/apt-dependencies
+    wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/create_config_dirs
+    wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/install_mujoco
+    wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/pip3-dependencies
+
+    # remove sudo from the scripts (there is no sudo in this container, neither
+    # is it needed)
+    sed -i "s/sudo //g" ./apt-dependencies ./create_config_dirs ./install_mujoco ./pip3-dependencies
+
+    # execute with -e so the image build fails if there is any error
+    bash -e ./apt-dependencies
+    bash -e ./create_config_dirs
+    bash -e ./install_mujoco
+    bash -e ./pip3-dependencies
+
+    # some packages need gcc 9
+    add-apt-repository ppa:ubuntu-toolchain-r/test
+    apt install -y gcc-9 g++-9
+    # make sure gcc/g++ 9 is used by default
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+
+    pip3 install --upgrade pip
+
+    # additional dependencies that are needed but not installed by the scripts
+    # above
+    pip3 install sphinx breathe m2r recommonmark sphinx_rtd_theme sphinxcontrib-moderncmakedomain
+    apt-get install -y doxygen
+    apt-get install -y clang-format
+    apt-get install -y libxrandr-dev libxinerama-dev libxcursor-dev
+    apt-get install -y xterm
+    apt-get install -y libzmqpp-dev
+    apt-get install -y libfmt-dev
+
+    pip3 install pytransform3d zmq
+
+    # needed for hysr
+    apt-get install -y psmisc jq
+
+    # not necessarily needed but very convenient to have inside the container
+    apt-get install -y python3-venv
+    apt-get install -y ipython3
+
+
+    ## mujoco-py
+    apt-get install -y \
+        git \
+        libgl1-mesa-dev \
+        libgl1-mesa-glx \
+        libglew-dev \
+        libosmesa6-dev \
+        software-properties-common \
+        net-tools \
+        xpra \
+        xserver-xorg-dev \
+        patchelf
+
+    export MUJOCO_PY_MUJOCO_PATH=/usr/local/mujoco200_linux
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/mujoco200_linux/bin
+
+#    git clone --depth=1 https://github.com/openai/mujoco-py.git -b v2.0.2.5
+#    cd mujoco-py
+#    # apply patch so that it works in read-only container (see
+#    # https://github.com/openai/mujoco-py/issues/523)
+#    patch mujoco_py/builder.py <(echo "87c87
+#<     lockpath = os.path.join(os.path.dirname(cext_so_path), 'mujocopy-buildlock')
+#---
+#>     lockpath = os.path.join('/tmp', 'mujocopy-buildlock')")
+#    pip3 install --no-cache-dir -r requirements.txt
+#    pip3 install --no-cache-dir -r requirements.dev.txt
+#    #python3 setup.py build install
+#    pip3 install .
+#    cd ..
+#    rm -rf mujoco_py
+
+    #pip3 install mujoco-py==1.50.1.68
+
+    #pip3 install baselines
+
+
+    pip3 install tensorflow==1.14
+
+    git clone https://github.com/openai/baselines.git
+    cd baselines
+    pip3 install .
+    cd -
+
+    pip3 install stable-baselines
+
+    # need to install colcon with -U otherwise there can be some version
+    # dependency issue
+    pip3 install -U colcon-common-extensions
+
+    # Change standard "python" to use python3 (otherwise Python bindings for
+    # some packages will end up being build for Python 2).
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 300
+
+
+%environment
+    export MUJOCO_PY_MJKEY_PATH=/opt/mujoco/mjkey.txt
+    export MUJOCO_PY_MUJOCO_PATH=/usr/local/mujoco200_linux
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/mujoco200_linux/bin

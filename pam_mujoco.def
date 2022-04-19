@@ -18,7 +18,11 @@ From: pam_base.sif
     done > /opt/pam/git_status.txt
 
     # build and install to /opt/pam
-    colcon build --install-base /opt/pam --cmake-args ' -DCMAKE_BUILD_TYPE=Release '  '-DBUILD_TESTING=OFF'
+    colcon build --install-base /opt/pam --cmake-args \
+        --no-warn-unused-cli \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_TESTING=OFF \
+        -DPYBIND11_TEST=OFF
 
     # create /setup.bash for easily activating the workspace
     echo "source /opt/pam/setup.bash" > /setup.bash
