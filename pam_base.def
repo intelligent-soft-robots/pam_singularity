@@ -37,10 +37,7 @@ From: ubuntu:20.04
     # above
     # TODO: They should be listed in the install scripts
     pip3 install \
-        m2r \
-        recommonmark \
-        sphinx_rtd_theme \
-        sphinxcontrib-moderncmakedomain \
+        breathing-cat \
         nptyping \
         h5py
     apt-get install -y \
