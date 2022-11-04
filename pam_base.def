@@ -38,6 +38,7 @@ From: ubuntu:20.04
     # TODO: They should be listed in the install scripts
     pip3 install \
         breathing-cat \
+        variconf \
         nptyping \
         h5py
     apt-get install -y \
