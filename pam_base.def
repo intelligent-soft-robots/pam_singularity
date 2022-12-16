@@ -64,7 +64,19 @@ From: ubuntu:20.04
     # dependency issue
     pip3 install -U colcon-common-extensions
 
-    cd -
+    # install Vicon DataStream SDK from source
+    git clone https://github.com/intelligent-soft-robots/vicon-datastream-sdk.git
+    cd vicon-datastream-sdk
+    mkdir build
+    cd build
+    # need position independent code so the SDK can be used in code that is
+    # bound with pybind11
+    cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release ..
+    make
+    make install
+
+
+    cd /
     echo "======================================================="
     echo "Finished.  Delete temporary directory ${tmpdir}"
     echo "======================================================="
