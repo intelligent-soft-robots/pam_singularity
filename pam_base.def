@@ -75,6 +75,8 @@ From: ubuntu:20.04
     make
     make install
 
+    # some custom setup by Felix
+    echo 'export PATH=~/.cargo/bin/:$PATH; eval "$(starship init bash)"' > /fsetup.bash
 
     cd /
     echo "======================================================="
