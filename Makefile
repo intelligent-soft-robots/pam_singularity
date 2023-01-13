@@ -25,6 +25,8 @@ build/cluster_utils:
 # There is a generic "make *.sif" target which simply builds the *.def file of
 # the same name.  Images that have dependencies should resolve them in a target
 # for the specific def file.
+#
+pam_base_dev.def: pam_base.sif
 
 pam_mujoco.def: pam_base.sif build/pam_mujoco_ws
 
