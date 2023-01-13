@@ -22,11 +22,12 @@ jobs:
         steps:
             - name: Install Apptainer
               run: |
-                wget https://github.com/apptainer/apptainer/releases/download/v1.0.2/apptainer_1.0.2_amd64.deb
-                sudo apt-get install ./apptainer_1.0.2_amd64.deb
+                apptainer_version=1.1.5
+                wget https://github.com/apptainer/apptainer/releases/download/v${apptainer_version}/apptainer_${apptainer_version}_amd64.deb
+                sudo apt-get install ./apptainer_${apptainer_version}_amd64.deb
 
             - name: Check out code for the container build
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Install treep
               run: |
@@ -47,7 +48,7 @@ jobs:
                   tag=${GITHUB_REF_NAME}
                 fi
 
-                echo ${{ secrets.GITHUB_TOKEN }} | singularity remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
+                echo ${{ secrets.GITHUB_TOKEN }} | apptainer remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
-                singularity push pam_base.sif oras://ghcr.io/${GITHUB_REPOSITORY}/pam_base:${tag}
-                singularity push pam_mujoco.sif oras://ghcr.io/${GITHUB_REPOSITORY}/pam_mujoco:${tag}
+                apptainer push pam_base.sif oras://ghcr.io/${GITHUB_REPOSITORY}/pam_base:${tag}
+                apptainer push pam_mujoco.sif oras://ghcr.io/${GITHUB_REPOSITORY}/pam_mujoco:${tag}
