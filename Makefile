@@ -14,7 +14,8 @@ build/pam_mujoco_ws:
 	mkdir -p build/pam_mujoco_ws
 	cd build/pam_mujoco_ws; \
 		git clone https://github.com/intelligent-soft-robots/treep_isr.git; \
-		treep --clone-https PAM_MUJOCO;
+		treep --clone-https PAM_MUJOCO; \
+		treep --clone-https PAM_VICON;
 
 build/cluster_utils:
 	mkdir -p build
