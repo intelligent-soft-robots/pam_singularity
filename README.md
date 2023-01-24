@@ -1,4 +1,4 @@
-# PAM Apptainer/Apptainer Images
+# PAM Apptainer/Singularity Images
 
 [Apptainer](https://apptainer.org) definition files related to the PAM robot.
 
