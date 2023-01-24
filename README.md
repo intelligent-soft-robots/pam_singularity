@@ -8,7 +8,7 @@
 You can pull pre-build versions of the `pam_base` and `pam_mujoco` images
 directly with Apptainer. For example for the latest base image:
 
-    $ apptainer pull oras://ghcr.io/intelligent-soft-robots/pam_apptainer/pam_base:latest
+    $ apptainer pull oras://ghcr.io/intelligent-soft-robots/pam_singularity/pam_base:latest
 
 
 ## Images in this Repository
