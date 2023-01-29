@@ -13,10 +13,9 @@ From: pam_mujoco.sif
     cd ..
 
     #install sb3 with changes
-    pip3 install gym_robotics
-    git clone https://github.com/DLR-RM/stable-baselines3.git
+    git clone https://github.com/rodrigodelazcano/stable-baselines3.git
     cd stable-baselines3
-    git checkout 21300c9aaf6ddb97c9511b7123415680db3ec873
+    git checkout fix_tests
     cd ..
     cd learning_table_tennis_from_scratch/learning_table_tennis_from_scratch/sb3
     cp __init__.py her_replay_buffer.py hindsight_state_selection_strategy.py ../../../stable-baselines3/stable_baselines3/her/
@@ -25,6 +24,15 @@ From: pam_mujoco.sif
     cd stable-baselines3
     pip3 install --no-cache-dir .[extra]
     cd ..
+
+    #install Gymnasium-Robotics-HYSR
+    git clone https://github.com/simonguist/Gymnasium-Robotics-HYSR.git
+    cd Gymnasium-Robotics-HYSR
+    git checkout sb3-compatible
+    pip3 install --no-cache-dir .
+    cd ..
+
+    pip3 install mujoco=="2.2.1" imageio=="2.16.1"
     
     #remove folders
     rm -rf learning_table_tennis_from_scratch

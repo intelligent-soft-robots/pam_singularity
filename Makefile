@@ -1,4 +1,4 @@
-sifs = pam_base.sif pam_mujoco.sif learning_table_tennis_from_scratch.sif
+sifs = pam_base.sif pam_mujoco.sif learning_table_tennis_from_scratch.sif learning_table_tennis_from_scratch_gym_robotics.sif learning_table_tennis_from_scratch_gym_robotics_vanilla.sif
 
 .PHONY: all
 all: $(sifs)
@@ -27,6 +27,8 @@ build/cluster_utils:
 pam_mujoco.def: pam_base.sif build/pam_mujoco_ws
 
 learning_table_tennis_from_scratch.def: pam_mujoco.sif build/cluster_utils
+learning_table_tennis_from_scratch_gym_robotics.def: pam_mujoco.sif build/cluster_utils
+learning_table_tennis_from_scratch_gym_robotics_vanilla.def: pam_mujoco.sif build/cluster_utils
 
 # build arbitrary def file
 %.sif: %.def

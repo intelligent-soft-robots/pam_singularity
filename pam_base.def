@@ -53,13 +53,15 @@ From: ubuntu:20.04
 
     pip3 install pytransform3d zmq
 
+    pip3 install breathing-cat 
+
     # needed for hysr
     apt-get install -y psmisc jq
 
     # not necessarily needed but very convenient to have inside the container
     apt-get install -y python3-venv python3-ipdb ipython3
 
-    pip3 install stable-baselines3[extra]
+    # pip3 install stable-baselines3[extra]
 
     # need to install colcon with -U otherwise there can be some version
     # dependency issue

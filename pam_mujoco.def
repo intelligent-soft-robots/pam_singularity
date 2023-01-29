@@ -7,6 +7,11 @@ From: pam_base.sif
 %post
     cd /tmp_ws
 
+    # velocity filtering
+    # cd src/context
+    # git checkout sguist/ball_vel_filtering
+    # cd ../..
+
     # store git revision of each package (so we know which versions were used)
     mkdir /opt/pam
     for d in src/*/
