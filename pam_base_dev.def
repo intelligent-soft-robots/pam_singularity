@@ -41,7 +41,19 @@ From: ./pam_base.sif
         mypy \
         pylsp-mypy \
         python-lsp-black \
-        python-lsp-server
+        python-lsp-ruff \
+        python-lsp-server \
+        ruff
+
+    # mypy stub packages
+    python3 -m pip install -U \
+        types-colorama \
+        types-docutils \
+        types-Pygments \
+        types-PyYAML \
+        types-setuptools \
+        types-toml \
+        types-tqdm
 
 
     # install go (needed for lazygit)
@@ -59,18 +71,35 @@ From: ./pam_base.sif
     # automatically detect and source local workspace in /setup.bash
     echo '
 # search for install dir to source local workspace
+start_dir="$PWD"
 prev=.
-while [[ $PWD != "$prev" ]]; do
+while [[ "$PWD" != "$prev" ]]; do
     if [ -d "$PWD/install" ]; then
         echo "Sourcing $PWD/install/local_setup.bash"
         . "$PWD/install/local_setup.bash"
         break
     fi
-    prev=$PWD
+    prev="$PWD"
     cd ..
 done
+cd "$start_dir"
 ' >> /setup.bash
+
+    # create a runscript that uses bash
+    cat > /runscript.bash << \EOM
+#!/bin/bash
+set -e
+
+# setup environment
+source /setup.bash
+exec "$@"
+EOM
+
 
 %environment
     export EDITOR=nvim
     export VISUAL=nvim
+
+
+%runscript
+    exec bash /runscript.bash "$@"
