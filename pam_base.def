@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu:20.04
+From: ubuntu:22.04
 
 %post -c /bin/bash
     set -e
@@ -18,11 +18,27 @@ From: ubuntu:20.04
     # basic requirements for this build script
     apt-get install -y wget git software-properties-common
 
+    # use python3.9
+    add-apt-repository ppa:deadsnakes/ppa
+    apt-get update
+    apt-get install -y python3.9 python3.9-venv python3.9-dev
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+
+    # use venv
+    python3 -m venv --system-site-packages /venv
+    source /venv/bin/activate
+
+
     wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/apt-dependencies
     wget http://people.tuebingen.mpg.de/mpi-is-software/pam/resources/pip3-dependencies
     # remove sudo from the scripts (there is no sudo in this container, neither
     # is it needed)
     sed -i "s/sudo //g" ./apt-dependencies ./pip3-dependencies
+
+    # replace zmq package
+    sed -i "s/libzmqpp-dev//g" ./apt-dependencies
+
+
     # execute with -e so the image build fails if there is any error
     bash -e ./apt-dependencies
     bash -e ./pip3-dependencies
@@ -30,6 +46,16 @@ From: ubuntu:20.04
     # install mujoco, using the install script from mujoco_interface
     git clone https://github.com/intelligent-soft-robots/mujoco_interface.git
     bash mujoco_interface/install
+
+    # Clone ZeroMQPP (zmqpp) from GitHub
+    git clone https://github.com/zeromq/zmqpp.git
+    cd zmqpp
+
+    # Build and install zmqpp
+    make
+    make install
+    cd ..
+
 
     pip3 install --upgrade pip
 
@@ -85,4 +111,7 @@ From: ubuntu:20.04
     rm -rf "${tmpdir}"
 
 %environment
+    # activate venv
+    source /venv/bin/activate
+
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/mpi-is/mujoco/lib
