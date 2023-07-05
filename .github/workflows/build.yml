@@ -46,7 +46,7 @@ jobs:
               run: make pam_mujoco.sif
 
             - name: Login and Deploy Container
-              if: ${{ github.event_name == "push" || github.event.inputs.publish == 'true' }}
+              if: ${{ github.event_name == 'push' || github.event.inputs.publish == 'true' }}
               run: |
                 if [ "${GITHUB_REF_NAME}" = "master" ]
                 then
