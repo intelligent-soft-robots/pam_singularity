@@ -34,10 +34,10 @@ jobs:
                 python3 -m pip install treep
 
             - name: Build pam_base.sif
-              run: make pam_base.sif USE_SUDO=1
+              run: make pam_base.sif
 
             - name: Build pam_mujoco.sif
-              run: make pam_mujoco.sif USE_SUDO=1
+              run: make pam_mujoco.sif
 
             - name: Login and Deploy Container
               run: |
