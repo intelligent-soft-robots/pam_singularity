@@ -15,6 +15,11 @@ on:
       - "*.def"
       - "Makefile"
   workflow_dispatch:
+    inputs:
+      no_publish:
+        description: "Do not Publish images (to only test the build)"
+        type: boolean
+        default: false
 
 jobs:
     build:
@@ -41,6 +46,7 @@ jobs:
               run: make pam_mujoco.sif
 
             - name: Login and Deploy Container
+              if: ${{ github.event.inputs.no_publish != true }}
               run: |
                 if [ "${GITHUB_REF_NAME}" = "master" ]
                 then
@@ -48,6 +54,8 @@ jobs:
                 else
                   tag=${GITHUB_REF_NAME}
                 fi
+
+                echo "Publish images using tag '${tag}'"
 
                 echo ${{ secrets.GITHUB_TOKEN }} | apptainer remote login -u ${{ secrets.GHCR_USERNAME }} --password-stdin oras://ghcr.io
 
