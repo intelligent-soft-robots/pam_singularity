@@ -16,8 +16,8 @@ on:
       - "Makefile"
   workflow_dispatch:
     inputs:
-      no_publish:
-        description: "Do not Publish images (to only test the build)"
+      publish:
+        description: "Publish images (disable to only test the build)"
         type: boolean
         default: false
 
@@ -46,7 +46,7 @@ jobs:
               run: make pam_mujoco.sif
 
             - name: Login and Deploy Container
-              if: ${{ github.event.inputs.no_publish != true }}
+              if: ${{ github.event_name == "push" || github.event.inputs.publish == 'true' }}
               run: |
                 if [ "${GITHUB_REF_NAME}" = "master" ]
                 then
