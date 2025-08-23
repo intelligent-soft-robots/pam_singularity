@@ -5,11 +5,23 @@ From: pam_mujoco.sif
     build/cluster_utils /cluster_utils
 
 %post
+    pip3 install scikit-learn
+    pip3 install scipy
+    pip3 install noise
+    pip3 install gym
+    pip3 install gymnasium
+    pip3 install gymnasium_robotics
+    pip3 install tikzplotlib
+    pip3 install tqdm
+    pip3 install webcolors==1.11.1
+
     git clone https://github.com/intelligent-soft-robots/learning_table_tennis_from_scratch.git
     cd learning_table_tennis_from_scratch
+    git checkout offline_tt_many_ball_reward
     pip3 install --no-cache-dir .
-    cd ..
-    rm -rf learning_table_tennis_from_scratch
+    cd gcsl/dependencies
+    pip3 install -e .
+    cd ../../..
 
     # also install cluster_utils for hyperparameter optimisation
     cd /cluster_utils

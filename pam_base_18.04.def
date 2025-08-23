@@ -102,6 +102,10 @@ From: ubuntu:18.04
     cd -
 
     pip3 install stable-baselines
+    pip3 install omegaconf
+    pip3 install gymnasium
+    pip3 install matplotlib
+
 
     # need to install colcon with -U otherwise there can be some version
     # dependency issue

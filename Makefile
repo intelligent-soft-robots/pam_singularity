@@ -14,7 +14,22 @@ build/pam_mujoco_ws:
 	mkdir -p build/pam_mujoco_ws
 	cd build/pam_mujoco_ws; \
 		git clone https://github.com/intelligent-soft-robots/treep_isr.git; \
-		treep --clone-https PAM_MUJOCO;
+		treep --clone-https O80; \
+		treep --clone-https pam_mujoco; \
+		treep --clone-https mujoco_interface; \
+		treep --clone-https pam_install; \
+		treep --clone-https pam_configuration; \
+		treep --clone-https pam_interface; \
+		treep --clone-https json_helper; \
+		treep --clone-https o80_pam; \
+		treep --clone-https context; \
+		treep --clone-https pam_models; \
+		treep --clone-https frequency_monitoring; \
+		treep --clone-https cmake_always_do; \
+		treep --checkout-branch sguist/ball_vel_filtering; \
+		treep --checkout-branch sguist/racket_state_rebase; \
+		treep --checkout-branch sguist/originals_extended; \
+		treep --checkout-branch sguist/get_fk;
 
 build/cluster_utils:
 	mkdir -p build
